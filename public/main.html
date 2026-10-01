@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoworkPRO - Explora</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo"><i class="fa-solid fa-layer-group"></i>CoworkPRO</div>
+        <ul>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Explorar</a></li>
+            <li><a href="#">Favoritos</a></li>
+            <li><a href="#">Mi Perfil</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <h1>Encuentra tu lugar de inspiración</h1>
+        <p>Espacios únicos para trabajar, crear y conectar.</p>
+        
+        <form class="search-box" action="/api/buscar" method="GET">
+            <input type="text" name="ubicacion" placeholder="¿Qué buscas? (ej. Estudio, Sala, Oficina)">
+            <input type="date" name="fecha">
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+        </form>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>

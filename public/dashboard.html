@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand"><i class="fa-solid fa-cube"></i> Admin<span>Panel</span></div>
+        <ul>
+            <li><a href="#" class="active"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+            <li><a href="#"><i class="fa-solid fa-calendar-check"></i> Reservas</a></li>
+            <li><a href="#"><i class="fa-solid fa-users"></i> Clientes</a></li>
+            <li><a href="#"><i class="fa-solid fa-gear"></i> Ajustes</a></li>
+        </ul>
+    </aside>
+
+    <main class="main">
+        <div class="header-dash">
+            <div>
+                <h1>Gestión de Espacios</h1>
+                <p style="color: #a3aed1; margin-top: 5px;">Bienvenido de vuelta. Aquí está el resumen de tus publicaciones.</p>
+            </div>
+            <!-- Perfil Admin dummy -->
+            <img src="https://ui-avatars.com/api/?name=Admin&background=4318ff&color=fff&rounded=true" alt="Admin" width="50">
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#e6f8ec; color:#05cd99;"><i class="fa-solid fa-building-circle-check"></i></div>
+                <div class="stat-info"><h4>Espacios Activos</h4><h2>12</h2></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#fff3e0; color:#ff9800;"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                <div class="stat-info"><h4>Reservas Pendientes</h4><h2>5</h2></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#f4f7fe; color:#4318ff;"><i class="fa-solid fa-wallet"></i></div>
+                <div class="stat-info"><h4>Ingresos del Mes</h4><h2>$1,240</h2></div>
+            </div>
+        </div>
+
+        <div class="admin-grid">
+            <!-- Formulario de Creación con look premium -->
+            <div class="panel">
+                <h3><i class="fa-solid fa-plus-circle"></i> Nuevo Espacio</h3>
+                <form action="/api/espacios" method="POST">
+                    <div class="form-group">
+                        <label>Nombre del Espacio</label>
+                        <input type="text" name="titulo" placeholder="Ej. Oficina Privada VIP" required>
+                    </div>
+                    <div class="form-group" style="display:flex; gap:10px;">
+                        <div style="flex:1;">
+                            <label>Precio/hr ($)</label>
+                            <input type="number" name="precio" placeholder="0.00" required>
+                        </div>
+                        <div style="flex:1;">
+                            <label>Capacidad</label>
+                            <input type="number" name="capacidad" placeholder="Pax" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <textarea name="descripcion" rows="3" placeholder="Atributos y ventajas del lugar..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Publicar Espacio <i class="fa-solid fa-rocket" style="margin-left:5px;"></i></button>
+                </form>
+            </div>
+
+            <!-- Tabla de Listado Estilizada -->
+            <div class="panel">
+                <h3><i class="fa-solid fa-list-check"></i> Tus Publicaciones</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Capacidad</th>
+                            <th>Precio</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div>Boardroom Ejecutiva</div>
+                                <div style="font-size:0.8rem; color:#a3aed1; font-weight:normal;">ID: #1001</div>
+                            </td>
+                            <td>20 pax</td>
+                            <td>$45.00</td>
+                            <td><span class="status">Activo</span></td>
+                            <td class="action-btns">
+                                <button class="btn-edit" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                                <form action="/api/espacios/1001?_method=DELETE" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn-delete" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>Estudio Creativo</div>
+                                <div style="font-size:0.8rem; color:#a3aed1; font-weight:normal;">ID: #1002</div>
+                            </td>
+                            <td>5 pax</td>
+                            <td>$25.00</td>
+                            <td><span class="status">Activo</span></td>
+                            <td class="action-btns">
+                                <button class="btn-edit"><i class="fa-solid fa-pen"></i></button>
+                                <form action="/api/espacios/1002?_method=DELETE" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn-delete"><i class="fa-solid fa-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

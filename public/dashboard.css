@@ -1,0 +1,48 @@
+ * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f4f7fe; color: #2b3674; display: flex; height: 100vh; overflow: hidden; }
+        
+        /* Sidebar interactiva */
+        .sidebar { width: 280px; background: #111c44; color: white; padding: 2rem; display: flex; flex-direction: column; transition: 0.3s; }
+        .brand { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 10px; margin-bottom: 3rem; color: #fff; }
+        .brand span { color: #4318ff; }
+        .sidebar ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .sidebar a { text-decoration: none; color: #a3aed1; font-weight: 500; padding: 1rem; border-radius: 12px; display: flex; align-items: center; gap: 15px; transition: all 0.3s; }
+        .sidebar a:hover, .sidebar a.active { background: #4318ff; color: white; transform: translateX(5px); }
+
+        /* Contenido Principal */
+        .main { flex: 1; padding: 2rem 3rem; overflow-y: auto; }
+        .header-dash { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .header-dash h1 { font-size: 2rem; font-weight: 700; }
+        
+        /* Tarjetas de Estadísticas */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: white; padding: 1.5rem; border-radius: 20px; display: flex; align-items: center; gap: 1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.02); transition: transform 0.3s; border: 1px solid #f1f5f9; }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(67, 24, 255, 0.1); }
+        .stat-icon { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .stat-info h4 { font-size: 0.9rem; color: #a3aed1; font-weight: 500; }
+        .stat-info h2 { font-size: 1.5rem; color: #2b3674; }
+
+        /* Panel Principal */
+        .admin-grid { display: grid; grid-template-columns: 350px 1fr; gap: 2rem; }
+        .panel { background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
+        .panel h3 { margin-bottom: 1.5rem; font-size: 1.2rem; color: #2b3674; display: flex; align-items: center; gap: 10px; }
+        
+        /* Formularios atractivos */
+        .form-group { margin-bottom: 1.5rem; position: relative; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #a3aed1; margin-bottom: 0.5rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 1rem; background: #f4f7fe; border: 2px solid transparent; border-radius: 12px; outline: none; transition: 0.3s; font-size: 0.95rem; color: #2b3674; }
+        .form-group input:focus, .form-group textarea:focus { border-color: #4318ff; background: white; box-shadow: 0 0 0 4px rgba(67, 24, 255, 0.1); }
+        .btn-submit { width: 100%; padding: 1rem; background: #4318ff; color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 1rem; }
+        .btn-submit:hover { background: #3311db; box-shadow: 0 10px 20px rgba(67, 24, 255, 0.3); }
+
+        /* Tabla Estilizada */
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 1rem; font-size: 0.85rem; color: #a3aed1; border-bottom: 2px solid #f4f7fe; }
+        td { padding: 1rem; font-size: 0.95rem; font-weight: 500; border-bottom: 1px solid #f4f7fe; vertical-align: middle; }
+        .status { padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; background: #e6f8ec; color: #05cd99; }
+        
+        .action-btns button { border: none; width: 35px; height: 35px; border-radius: 10px; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; }
+        .btn-edit { background: #f4f7fe; color: #4318ff; margin-right: 5px; }
+        .btn-edit:hover { background: #4318ff; color: white; }
+        .btn-delete { background: #ffeded; color: #ee5d50; }
+        .btn-delete:hover { background: #ee5d50; color: white; }
