@@ -1,22 +1,27 @@
 import express from "express"
-import { Router } from "express"
-const router = Router()
+import { User } from "../data/database";
 
-router.post("/register", async (req, res) => {
+//CREATE ACCOUNT
+
+const RegisterUser = async (req, res) => {
     try {
-        const {name, email, phone, password} = req.body
+        const {name, email, phone, password} =  req.body
         if (!name || !email || !phone || !password) {
             return res.status(400).json({
                 message: "Missing fields"
             })
         }
 
-        //Si ya existe..
-    }
+        const Exists = await User.exists(email, password)
+        if (Exists) {
+            return res.status(400).json({
+                message: "Account already registered"
+            })
+        }
+}
 
-    catch (error) {
-        res.status(500).json({
-            message: "Error"
-        })
-    }
-})
+catch (error) {
+    return res.status(400).json({
+        error: "ERROR"
+    })
+}}

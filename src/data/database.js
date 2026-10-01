@@ -22,7 +22,7 @@ export const crearTabla = async () => {
 crearTabla();
 
 export const User = {
-  async crear({ name, user, email, password, role}) {
+  async create({ name, user, email, password, role}) {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const [result] = await pool.execute(
@@ -34,30 +34,30 @@ export const User = {
     return result.insertId;
   },
 
-  async buscarPorEmailOUsuario(email, user) {
+  async SearchforEmailandUser(email, password) {
     let sql, params;
 
     if (email) {
       sql = 'SELECT * FROM users WHERE email = ?';
       params = [email];
     } else {
-      sql = 'SELECT * FROM users WHERE user = ?';
-      params = [user];
+      sql = 'SELECT * FROM users WHERE password = ?';
+      params = [password];
     }
 
     const [rows] = await pool.execute(sql, params);
     return rows[0];
   },
 
-  async existe(email, user) {
+  async exists(email, password) {
     const [rows] = await pool.execute(
       'SELECT id FROM users WHERE email = ? OR usuario = ?',
-      [email, user]
+      [email, password]
     );
     return rows.length > 0;
   },
 
-  async compararPassword(passwordPlano, passwordHash) {
-    return await bcrypt.compare(passwordPlano, passwordHash);
+  async comparePassword(passwordPlane, passwordHash) {
+    return await bcrypt.compare(passwordPlane, passwordHash);
   }
 };
