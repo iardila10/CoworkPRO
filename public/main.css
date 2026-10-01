@@ -1,0 +1,54 @@
+:root {
+            --primary: #4f46e5;
+            --secondary: #ec4899;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.85);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark); overflow-x: hidden; }
+        
+        /* Navbar */
+        nav { background: var(--glass); backdrop-filter: blur(10px); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05); }
+        .logo { font-size: 1.8rem; font-weight: 700; background: linear-gradient(45deg, var(--primary), var(--secondary)); background-clip: text; -webkit-text-fill-color: transparent; }
+        nav ul { list-style: none; display: flex; gap: 2.5rem; }
+        nav a { text-decoration: none; color: var(--dark); font-weight: 600; position: relative; transition: color 0.3s; }
+        nav a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background: var(--primary); transition: width 0.3s; }
+        nav a:hover { color: var(--primary); }
+        nav a:hover::after { width: 100%; }
+
+        /* Hero Animado */
+        .hero { position: relative; padding: 6rem 5%; text-align: center; color: white; background: linear-gradient(-45deg, #4f46e5, #3b82f6, #ec4899, #8b5cf6); background-size: 400% 400%; animation: gradientBG 10s ease infinite; border-radius: 0 0 50px 50px; box-shadow: 0 20px 40px rgba(79, 70, 229, 0.3); margin-bottom: 4rem; }
+        @keyframes gradientBG { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); animation: slideDown 0.8s ease; }
+        .hero p { font-size: 1.2rem; margin-bottom: 2.5rem; opacity: 0.9; }
+
+        /* Buscador Glassmorphism */
+        .search-box { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.3); padding: 1.5rem; border-radius: 15px; max-width: 800px; margin: 0 auto; display: flex; gap: 1rem; box-shadow: 0 15px 25px rgba(0,0,0,0.1); transform: translateY(50%); position: absolute; bottom: 0; left: 0; right: 0; }
+        .search-box input { flex: 1; padding: 1rem 1.5rem; border: none; border-radius: 10px; font-size: 1rem; outline: none; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
+        .search-box button { padding: 1rem 2.5rem; background: var(--dark); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+        .search-box button:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); background: #000; }
+
+        /* Contenedor y Tarjetas */
+        .container { max-width: 1200px; margin: 6rem auto 3rem; padding: 0 2rem; }
+        .section-title { font-size: 2rem; text-align: center; margin-bottom: 3rem; color: var(--dark); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2.5rem; }
+        
+        .card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; border: 1px solid rgba(0,0,0,0.02); }
+        .card:hover { transform: translateY(-15px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+        
+        .card-img { height: 220px; background: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80') center/cover; position: relative; }
+        .card-badge { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.9); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        .card-body { padding: 1.8rem; }
+        .card-title { font-size: 1.4rem; margin-bottom: 0.5rem; }
+        .card-desc { font-size: 0.95rem; color: #64748b; margin-bottom: 1.5rem; }
+        
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 1.5rem; }
+        .price { font-weight: 700; color: var(--dark); font-size: 1.3rem; }
+        .price span { font-size: 0.8rem; color: #94a3b8; font-weight: 400; }
+        
+        .btn-book { padding: 0.8rem 1.5rem; background: linear-gradient(45deg, var(--primary), #8b5cf6); color: white; text-decoration: none; border-radius: 10px; font-weight: 600; transition: 0.3s; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4); }
+        .btn-book:hover { box-shadow: 0 8px 25px rgba(79, 70, 229, 0.6); transform: scale(1.05); }
+
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }

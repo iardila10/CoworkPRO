@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso y Registro</title>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            pink: '#ec4899',
+                            purple: '#8b5cf6'
+                        }
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --secondary: #ec4899;
+            --purple: #8b5cf6;
+            --dark: #0f172a;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #4f46e5, #3b82f6, #ec4899, #8b5cf6);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.6;
+            animation: floatOrb 10s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: #ec4899;
+            top: -50px;
+            left: -50px;
+        }
+
+        .orb-2 {
+            width: 350px;
+            height: 350px;
+            background: #6366f1;
+            bottom: -80px;
+            right: -50px;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 200px;
+            height: 200px;
+            background: #a855f7;
+            top: 40%;
+            right: 20%;
+            animation-delay: -3s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, 50px) scale(1.15); }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .input-group input:focus ~ .input-icon,
+        .input-group select:focus ~ .input-icon {
+            color: var(--primary);
+        }
+
+        .role-option {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .role-option.active {
+            border-color: var(--primary);
+            background: rgba(79, 70, 229, 0.08);
+            box-shadow: 0 8px 20px -6px rgba(79, 70, 229, 0.3);
+        }
+
+        .tab-btn {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .tab-indicator {
+            position: absolute;
+            bottom: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Password strength indicator bars */
+        .strength-bar {
+            height: 4px;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            background-color: #e2e8f0;
+        }
+
+        .form-section {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .form-hidden {
+            display: none;
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        .form-visible {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Toast notification popup */
+        .toast {
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="flex flex-col justify-between relative min-h-screen">
+
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <header class="glass-nav fixed top-0 left-0 right-0 z-50 py-3 px-6 md:px-12 flex justify-between items-center">
+        <a href="#" class="flex items-center gap-2 text-2xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent hover:opacity-90 transition">
+            <i class="fa-solid fa-layer-group text-indigo-600 text-2xl"></i>
+            <span>Cowork<span class="text-slate-900 font-extrabold">PRO</span></span>
+        </a>
+
+        <div class="flex items-center gap-3">
+            <span class="hidden sm:inline-block text-xs font-semibold px-3 py-1 rounded-full bg-indigo-100 text-indigo-700">
+                <i class="fa-solid fa-shield-halved mr-1"></i> Acceso Seguro SSL
+            </span>
+            <button onclick="toggleQuickDemoModal()" class="text-xs md:text-sm font-semibold px-4 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition shadow-md flex items-center gap-2">
+                <i class="fa-solid fa-compass"></i>
+                <span>Ver Portales</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 flex items-center justify-center px-4 pt-24 pb-12 z-10 w-full max-w-7xl mx-auto">
+        <div class="w-full max-w-xl">
+
+            <!-- Card Container -->
+            <div class="glass-card rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+
+                <!-- Header Brand Tagline -->
+                <div class="text-center mb-6">
+                    <h1 id="portalTitle" class="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
+                        ¡Bienvenido de nuevo! 👋
+                    </h1>
+                    <p id="portalSubhead" class="text-slate-500 text-xs sm:text-sm mt-1">
+                        Ingresa a tu cuenta para gestionar o reservar tus espacios
+                    </p>
+                </div>
+
+                <div class="relative bg-slate-100/80 p-1.5 rounded-2xl flex mb-6 border border-slate-200/60 shadow-inner">
+                    <button id="tabLogin" onclick="switchMode('login')" class="tab-btn active flex-1 py-2.5 text-xs sm:text-sm font-semibold text-center rounded-xl z-10 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket text-sm"></i> Iniciar Sesión
+                    </button>
+                    <button id="tabRegister" onclick="switchMode('register')" class="tab-btn flex-1 py-2.5 text-xs sm:text-sm font-semibold text-slate-500 text-center rounded-xl z-10 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-user-plus text-sm"></i> Registrarse
+                    </button>
+                    <div id="tabIndicator" class="tab-indicator w-1/2 left-0 h-full !bg-white rounded-xl shadow-md top-0 !bottom-auto" style="top:3px; height: calc(100% - 6px); width: calc(50% - 6px); left: 3px;"></div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                        <i class="fa-solid fa-user-gear mr-1 text-indigo-500"></i> Selecciona tu Perfil:
+                    </label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <!-- User Role Tile -->
+                        <div id="roleUser" onclick="setRole('user')" class="role-option active bg-white/90 p-3 rounded-2xl flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-lg shrink-0">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div class="overflow-hidden">
+                                <h4 class="font-bold text-xs sm:text-sm text-slate-800 leading-tight">Cliente</h4>
+                                <p class="text-[10px] sm:text-xs text-slate-500 truncate">Busca y reserva</p>
+                            </div>
+                        </div>
+
+                        <!-- Admin Role Tile -->
+                        <div id="roleAdmin" onclick="setRole('admin')" class="role-option bg-white/90 p-3 rounded-2xl flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center font-bold text-lg shrink-0">
+                                <i class="fa-solid fa-building-user"></i>
+                            </div>
+                            <div class="overflow-hidden">
+                                <h4 class="font-bold text-xs sm:text-sm text-slate-800 leading-tight">Anfitrión</h4>
+                                <p class="text-[10px] sm:text-xs text-slate-500 truncate">Publica y gestiona</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="loginForm" onsubmit="handleAuthSubmit(event, 'login')" class="form-section form-visible space-y-4">
+                    
+                    <!-- Email Field -->
+                    <div class="input-group">
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Correo Electrónico</label>
+                        <div class="relative">
+                            <input type="email" id="loginEmail" required placeholder="tuemail@ejemplo.com"
+                                class="w-full pl-10 pr-4 py-3 bg-white/80 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 transition">
+                            <i class="fa-solid fa-envelope input-icon absolute left-3.5 top-3.5 text-slate-400 text-sm transition"></i>
+                        </div>
+                    </div>
+
+                    <!-- Password Field with Visibility Toggle -->
+                    <div class="input-group">
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="block text-xs font-semibold text-slate-600">Contraseña</label>
+                            <a href="#" onclick="showToast('Se envió un enlace de recuperación a tu correo.', 'info')" class="text-xs text-indigo-600 font-semibold hover:underline">¿Olvidaste tu contraseña?</a>
+                        </div>
+                        <div class="relative">
+                            <input type="password" id="loginPassword" required placeholder="••••••••"
+                                class="w-full pl-10 pr-10 py-3 bg-white/80 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 transition">
+                            <i class="fa-solid fa-lock input-icon absolute left-3.5 top-3.5 text-slate-400 text-sm transition"></i>
+                            <button type="button" onclick="togglePasswordVisibility('loginPassword', 'eyeIconLogin')" class="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-600 transition">
+                                <i id="eyeIconLogin" class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Remember Me Checkbox -->
+                    <div class="flex items-center justify-between pt-1">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 rounded text-indigo-600 border-slate-300 focus:ring-indigo-500">
+                            <span class="text-xs text-slate-600 font-medium">Recordarme en este dispositivo</span>
+                        </label>
+                    </div>
+
+                    <!-- Login Submit Button -->
+                    <button type="submit" id="loginBtn" class="w-full py-3.5 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-[1.01] active:scale-[0.99] transition flex items-center justify-center gap-2">
+                        <span>Iniciar Sesión como Cliente</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                    <div class="relative my-6 text-center">
+                        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
+                        <span class="relative px-3 bg-slate-100/80 text-[11px] font-semibold text-slate-400 uppercase rounded-full">o ingresa con</span>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3">
+                        <button type="button" onclick="socialLogin('Google')" class="py-2.5 px-3 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center text-slate-700 font-medium text-xs transition shadow-sm hover:shadow">
+                            <i class="fa-brands fa-google text-red-500 text-base mr-2"></i> Google
+                        </button>
+                        <button type="button" onclick="socialLogin('Apple')" class="py-2.5 px-3 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center text-slate-700 font-medium text-xs transition shadow-sm hover:shadow">
+                            <i class="fa-brands fa-apple text-slate-900 text-base mr-2"></i> Apple
+                        </button>
+                        <button type="button" onclick="socialLogin('GitHub')" class="py-2.5 px-3 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center text-slate-700 font-medium text-xs transition shadow-sm hover:shadow">
+                            <i class="fa-brands fa-github text-slate-800 text-base mr-2"></i> GitHub
+                        </button>
+                    </div>
+
+                </form>
+
+                <form id="registerForm" onsubmit="handleAuthSubmit(event, 'register')" class="form-section form-hidden space-y-3.5">
+                    
+                    <!-- Full Name -->
+                    <div class="input-group">
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre Completo</label>
+                        <div class="relative">
+                            <input type="text" id="regName" required placeholder="Ej. Valentina Ríos"
+                                class="w-full pl-10 pr-4 py-2.5 bg-white/80 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 transition">
+                            <i class="fa-solid fa-user input-icon absolute left-3.5 top-3 text-slate-400 text-sm transition"></i>
+                        </div>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="input-group">
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Correo Electrónico</label>
+                        <div class="relative">
+                            <input type="email" id="regEmail" required placeholder="tuemail@ejemplo.com"
+                                class="w-full pl-10 pr-4 py-2.5 bg-white/80 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 transition">
+                            <i class="fa-solid fa-envelope input-icon absolute left-3.5 top-3 text-slate-400 text-sm transition"></i>
+                        </div>
+                    </div>
+
+                    <!-- Admin-Specific Dynamic Field (Company / Property Name) -->
+                    <div id="adminFieldContainer" class="input-group hidden">
+                        <label class="block text-xs font-semibold text-pink-600 mb-1 flex items-center gap-1">
+                            <i class="fa-solid fa-building"></i> Nombre de la Empresa o Espacio
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="regCompany" placeholder="Ej. Coworking Innova S.A.S."
+                                class="w-full pl-10 pr-4 py-2.5 bg-pink-50/50 border border-pink-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:border-pink-500 focus:bg-white focus:ring-4 focus:ring-pink-500/10 transition">
+                            <i class="fa-solid fa-briefcase input-icon absolute left-3.5 top-3 text-pink-400 text-sm transition"></i>
+                        </div>
+                    </div>
+
+                    <!-- Phone Number / WhatsApp -->
+                    <div class="input-group">
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Teléfono / WhatsApp</label>
+                        <div class="relative">
+                            <input type="tel" id="regPhone" placeholder="+57 300 123 4567"
+                                class="w-full pl-10 pr-4 py-2.5 bg-white/80 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 transition">
+                            <i class="fa-solid fa-phone input-icon absolute left-3.5 top-3 text-slate-400 text-sm transition"></i>
+                        </div>
+                    </div>
+
+                    <!-- Password Field with Strength Meter -->
+                    <div class="input-group">
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Contraseña</label>
+                        <div class="relative">
+                            <input type="password" id="regPassword" required oninput="checkPasswordStrength(this.value)" placeholder="Crea una clave segura"
+                                class="w-full pl-10 pr-10 py-2.5 bg-white/80 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 transition">
+                            <i class="fa-solid fa-lock input-icon absolute left-3.5 top-3 text-slate-400 text-sm transition"></i>
+                            <button type="button" onclick="togglePasswordVisibility('regPassword', 'eyeIconReg')" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 transition">
+                                <i id="eyeIconReg" class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+
+                        <!-- Strength Meter Bar -->
+                        <div class="mt-2 grid grid-cols-4 gap-1.5">
+                            <div id="str1" class="strength-bar"></div>
+                            <div id="str2" class="strength-bar"></div>
+                            <div id="str3" class="strength-bar"></div>
+                            <div id="str4" class="strength-bar"></div>
+                        </div>
+                        <p id="strengthText" class="text-[10px] font-semibold text-slate-400 mt-1 text-right">Escribe una contraseña</p>
+                    </div>
+
+                    <!-- Terms and Conditions Checkbox -->
+                    <div class="pt-1">
+                        <label class="flex items-start gap-2 cursor-pointer">
+                            <input type="checkbox" required class="mt-0.5 w-4 h-4 rounded text-indigo-600 border-slate-300 focus:ring-indigo-500">
+                            <span class="text-xs text-slate-600">
+                                Acepto los <a href="#" class="text-indigo-600 font-semibold underline">Términos del Servicio</a> y la <a href="#" class="text-indigo-600 font-semibold underline">Política de Privacidad</a>.
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- Register Submit Button -->
+                    <button type="submit" id="registerBtn" class="w-full py-3.5 bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 text-white font-bold text-sm rounded-xl shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 hover:scale-[1.01] active:scale-[0.99] transition flex items-center justify-center gap-2">
+                        <span>Crear Cuenta de Cliente</span>
+                        <i class="fa-solid fa-user-check"></i>
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="relative z-10 text-center py-4 text-xs text-white/80 font-medium">
+        <p>© 2026 ReservaSpace Platform. Todos los derechos reservados.</p>
+    </footer>
+
+    <div id="demoModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 transform scale-95 transition-transform duration-300">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-extrabold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-route text-indigo-600"></i> Simular Navegación
+                </h3>
+                <button onclick="toggleQuickDemoModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="text-xs text-slate-500 mb-5">
+                Una vez conectado con tu Backend, las peticiones HTTP redirigirán automáticamente según la respuesta del servidor.
+            </p>
+            
+            <div class="space-y-3">
+                <button onclick="simulatePortalRedirect('user')" class="w-full p-4 rounded-2xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-left transition flex items-center justify-between group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-800">Ir al Portal de Usuario</h4>
+                            <p class="text-xs text-slate-500">Buscador y catálogo de espacios</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-indigo-500 group-hover:translate-x-1 transition"></i>
+                </button>
+
+                <button onclick="simulatePortalRedirect('admin')" class="w-full p-4 rounded-2xl bg-pink-50 hover:bg-pink-100 border border-pink-200 text-left transition flex items-center justify-between group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-pink-600 text-white flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-800">Ir al Panel Admin</h4>
+                            <p class="text-xs text-slate-500">Gestión de publicaciones y reservas</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-pink-500 group-hover:translate-x-1 transition"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 max-w-sm border border-slate-700">
+        <div id="toastIcon" class="text-indigo-400 text-lg">
+            <i class="fa-solid fa-circle-info"></i>
+        </div>
+        <div class="flex-1">
+            <p id="toastMessage" class="text-xs font-semibold">Notificación de prueba</p>
+        </div>
+    </div>
+
+    <script>
+        // State management variables
+        let currentMode = 'login'; // 'login' or 'register'
+        let currentRole = 'user';  // 'user' or 'admin'
+
+        function switchMode(mode) {
+            currentMode = mode;
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
+            const tabIndicator = document.getElementById('tabIndicator');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const portalTitle = document.getElementById('portalTitle');
+            const portalSubhead = document.getElementById('portalSubhead');
+
+            if (mode === 'login') {
+                tabLogin.classList.add('active');
+                tabRegister.classList.remove('active');
+                tabIndicator.style.left = '3px';
+
+                loginForm.classList.remove('form-hidden');
+                loginForm.classList.add('form-visible');
+                registerForm.classList.remove('form-visible');
+                registerForm.classList.add('form-hidden');
+
+                portalTitle.innerText = "¡Bienvenido de nuevo! 👋";
+                portalSubhead.innerText = "Ingresa a tu cuenta para gestionar o reservar tus espacios";
+            } else {
+                tabRegister.classList.add('active');
+                tabLogin.classList.remove('active');
+                tabIndicator.style.left = 'calc(50% + 3px)';
+
+                registerForm.classList.remove('form-hidden');
+                registerForm.classList.add('form-visible');
+                loginForm.classList.remove('form-visible');
+                loginForm.classList.add('form-hidden');
+
+                portalTitle.innerText = "Crear nueva cuenta ✨";
+                portalSubhead.innerText = "Únete a la plataforma líder en alquiler y reserva de espacios";
+            }
+
+            updateButtonLabels();
+        }
+
+        function setRole(role) {
+            currentRole = role;
+            const roleUser = document.getElementById('roleUser');
+            const roleAdmin = document.getElementById('roleAdmin');
+            const adminFieldContainer = document.getElementById('adminFieldContainer');
+
+            if (role === 'user') {
+                roleUser.classList.add('active');
+                roleAdmin.classList.remove('active');
+                adminFieldContainer.classList.add('hidden');
+            } else {
+                roleAdmin.classList.add('active');
+                roleUser.classList.remove('active');
+                adminFieldContainer.classList.remove('hidden');
+            }
+
+            updateButtonLabels();
+        }
+
+        function updateButtonLabels() {
+            const loginBtn = document.getElementById('loginBtn');
+            const registerBtn = document.getElementById('registerBtn');
+
+            const roleText = currentRole === 'user' ? 'Cliente' : 'Anfitrión';
+
+            if (loginBtn) {
+                loginBtn.querySelector('span').innerText = `Iniciar Sesión como ${roleText}`;
+            }
+            if (registerBtn) {
+                registerBtn.querySelector('span').innerText = `Crear Cuenta de ${roleText}`;
+            }
+        }
+
+        function togglePasswordVisibility(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function checkPasswordStrength(password) {
+            const str1 = document.getElementById('str1');
+            const str2 = document.getElementById('str2');
+            const str3 = document.getElementById('str3');
+            const str4 = document.getElementById('str4');
+            const strengthText = document.getElementById('strengthText');
+
+            let score = 0;
+            if (password.length > 5) score++;
+            if (password.length > 8) score++;
+            if (/[A-Z]/.test(password) && /[0-9]/.test(password)) score++;
+            if (/[^A-Za-z0-9]/.test(password)) score++;
+
+            const colors = ['#e2e8f0', '#ef4444', '#f59e0b', '#3b82f6', '#10b981'];
+            const labels = ['Sin clave', 'Débil', 'Aceptable', 'Buena', 'Excelente y Segura'];
+
+            str1.style.backgroundColor = score >= 1 ? colors[score] : '#e2e8f0';
+            str2.style.backgroundColor = score >= 2 ? colors[score] : '#e2e8f0';
+            str3.style.backgroundColor = score >= 3 ? colors[score] : '#e2e8f0';
+            str4.style.backgroundColor = score >= 4 ? colors[score] : '#e2e8f0';
+
+            strengthText.innerText = password.length > 0 ? labels[score] : 'Escribe una contraseña';
+            strengthText.style.color = score > 0 ? colors[score] : '#94a3b8';
+        }
+
+        function handleAuthSubmit(event, formType) {
+            event.preventDefault();
+
+            const roleName = currentRole === 'user' ? 'Cliente' : 'Anfitrión/Administrador';
+            const actionText = formType === 'login' ? 'Inicio de sesión exitoso' : 'Registro completado';
+
+            showToast(`¡${actionText}! Has ingresado como ${roleName}.`, 'success');
+
+            // Here you can integrate with your Backend endpoint via fetch/Axios
+            /*
+            fetch(`/api/auth/${formType}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ role: currentRole, ... })
+            })
+            */
+        }
+
+        function socialLogin(provider) {
+            showToast(`Conectando con ${provider}...`, 'info');
+        }
+
+        function showToast(msg, type = 'info') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMessage.innerText = msg;
+
+            if (type === 'success') {
+                toastIcon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
+            } else if (type === 'error') {
+                toastIcon.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-rose-400"></i>';
+            } else {
+                toastIcon.innerHTML = '<i class="fa-solid fa-circle-info text-indigo-400"></i>';
+            }
+
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        function toggleQuickDemoModal() {
+            const modal = document.getElementById('demoModal');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modal.querySelector('div').classList.remove('scale-95');
+                }, 10);
+            } else {
+                modal.classList.add('opacity-0');
+                modal.querySelector('div').classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        function simulatePortalRedirect(target) {
+            toggleQuickDemoModal();
+            if (target === 'user') {
+                showToast("Simulando redirección al Portal del Usuario...", "info");
+            } else {
+                showToast("Simulando redirección al Dashboard de Administración...", "info");
+            }
+        }
+    </script>
+</body>
+</html>
