@@ -205,10 +205,6 @@
             <span class="hidden sm:inline-block text-xs font-semibold px-3 py-1 rounded-full bg-indigo-100 text-indigo-700">
                 <i class="fa-solid fa-shield-halved mr-1"></i> Acceso Seguro SSL
             </span>
-            <button onclick="toggleQuickDemoModal()" class="text-xs md:text-sm font-semibold px-4 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition shadow-md flex items-center gap-2">
-                <i class="fa-solid fa-compass"></i>
-                <span>Ver Portales</span>
-            </button>
         </div>
     </header>
 
@@ -418,7 +414,7 @@
     </main>
 
     <footer class="relative z-10 text-center py-4 text-xs text-white/80 font-medium">
-        <p>© 2026 ReservaSpace Platform. Todos los derechos reservados.</p>
+        <p>© CoworkPRO Platform. Todos los derechos reservados.</p>
     </footer>
 
     <div id="demoModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
@@ -435,35 +431,6 @@
                 Una vez conectado con tu Backend, las peticiones HTTP redirigirán automáticamente según la respuesta del servidor.
             </p>
             
-            <div class="space-y-3">
-                <button onclick="simulatePortalRedirect('user')" class="w-full p-4 rounded-2xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-left transition flex items-center justify-between group">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-sm text-slate-800">Ir al Portal de Usuario</h4>
-                            <p class="text-xs text-slate-500">Buscador y catálogo de espacios</p>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-right text-indigo-500 group-hover:translate-x-1 transition"></i>
-                </button>
-
-                <button onclick="simulatePortalRedirect('admin')" class="w-full p-4 rounded-2xl bg-pink-50 hover:bg-pink-100 border border-pink-200 text-left transition flex items-center justify-between group">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-pink-600 text-white flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-chart-line"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-sm text-slate-800">Ir al Panel Admin</h4>
-                            <p class="text-xs text-slate-500">Gestión de publicaciones y reservas</p>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-right text-pink-500 group-hover:translate-x-1 transition"></i>
-                </button>
-            </div>
-        </div>
-    </div>
 
     <div id="toast" class="toast fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 max-w-sm border border-slate-700">
         <div id="toastIcon" class="text-indigo-400 text-lg">
@@ -474,192 +441,7 @@
         </div>
     </div>
 
-    <script>
-        // State management variables
-        let currentMode = 'login'; // 'login' or 'register'
-        let currentRole = 'user';  // 'user' or 'admin'
+<script src="script.js"></script>
 
-        function switchMode(mode) {
-            currentMode = mode;
-            const tabLogin = document.getElementById('tabLogin');
-            const tabRegister = document.getElementById('tabRegister');
-            const tabIndicator = document.getElementById('tabIndicator');
-            const loginForm = document.getElementById('loginForm');
-            const registerForm = document.getElementById('registerForm');
-            const portalTitle = document.getElementById('portalTitle');
-            const portalSubhead = document.getElementById('portalSubhead');
-
-            if (mode === 'login') {
-                tabLogin.classList.add('active');
-                tabRegister.classList.remove('active');
-                tabIndicator.style.left = '3px';
-
-                loginForm.classList.remove('form-hidden');
-                loginForm.classList.add('form-visible');
-                registerForm.classList.remove('form-visible');
-                registerForm.classList.add('form-hidden');
-
-                portalTitle.innerText = "¡Bienvenido de nuevo! 👋";
-                portalSubhead.innerText = "Ingresa a tu cuenta para gestionar o reservar tus espacios";
-            } else {
-                tabRegister.classList.add('active');
-                tabLogin.classList.remove('active');
-                tabIndicator.style.left = 'calc(50% + 3px)';
-
-                registerForm.classList.remove('form-hidden');
-                registerForm.classList.add('form-visible');
-                loginForm.classList.remove('form-visible');
-                loginForm.classList.add('form-hidden');
-
-                portalTitle.innerText = "Crear nueva cuenta ✨";
-                portalSubhead.innerText = "Únete a la plataforma líder en alquiler y reserva de espacios";
-            }
-
-            updateButtonLabels();
-        }
-
-        function setRole(role) {
-            currentRole = role;
-            const roleUser = document.getElementById('roleUser');
-            const roleAdmin = document.getElementById('roleAdmin');
-            const adminFieldContainer = document.getElementById('adminFieldContainer');
-
-            if (role === 'user') {
-                roleUser.classList.add('active');
-                roleAdmin.classList.remove('active');
-                adminFieldContainer.classList.add('hidden');
-            } else {
-                roleAdmin.classList.add('active');
-                roleUser.classList.remove('active');
-                adminFieldContainer.classList.remove('hidden');
-            }
-
-            updateButtonLabels();
-        }
-
-        function updateButtonLabels() {
-            const loginBtn = document.getElementById('loginBtn');
-            const registerBtn = document.getElementById('registerBtn');
-
-            const roleText = currentRole === 'user' ? 'Cliente' : 'Anfitrión';
-
-            if (loginBtn) {
-                loginBtn.querySelector('span').innerText = `Iniciar Sesión como ${roleText}`;
-            }
-            if (registerBtn) {
-                registerBtn.querySelector('span').innerText = `Crear Cuenta de ${roleText}`;
-            }
-        }
-
-        function togglePasswordVisibility(inputId, iconId) {
-            const input = document.getElementById(inputId);
-            const icon = document.getElementById(iconId);
-
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                input.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        }
-
-        function checkPasswordStrength(password) {
-            const str1 = document.getElementById('str1');
-            const str2 = document.getElementById('str2');
-            const str3 = document.getElementById('str3');
-            const str4 = document.getElementById('str4');
-            const strengthText = document.getElementById('strengthText');
-
-            let score = 0;
-            if (password.length > 5) score++;
-            if (password.length > 8) score++;
-            if (/[A-Z]/.test(password) && /[0-9]/.test(password)) score++;
-            if (/[^A-Za-z0-9]/.test(password)) score++;
-
-            const colors = ['#e2e8f0', '#ef4444', '#f59e0b', '#3b82f6', '#10b981'];
-            const labels = ['Sin clave', 'Débil', 'Aceptable', 'Buena', 'Excelente y Segura'];
-
-            str1.style.backgroundColor = score >= 1 ? colors[score] : '#e2e8f0';
-            str2.style.backgroundColor = score >= 2 ? colors[score] : '#e2e8f0';
-            str3.style.backgroundColor = score >= 3 ? colors[score] : '#e2e8f0';
-            str4.style.backgroundColor = score >= 4 ? colors[score] : '#e2e8f0';
-
-            strengthText.innerText = password.length > 0 ? labels[score] : 'Escribe una contraseña';
-            strengthText.style.color = score > 0 ? colors[score] : '#94a3b8';
-        }
-
-        function handleAuthSubmit(event, formType) {
-            event.preventDefault();
-
-            const roleName = currentRole === 'user' ? 'Cliente' : 'Anfitrión/Administrador';
-            const actionText = formType === 'login' ? 'Inicio de sesión exitoso' : 'Registro completado';
-
-            showToast(`¡${actionText}! Has ingresado como ${roleName}.`, 'success');
-
-            // Here you can integrate with your Backend endpoint via fetch/Axios
-            /*
-            fetch(`/api/auth/${formType}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ role: currentRole, ... })
-            })
-            */
-        }
-
-        function socialLogin(provider) {
-            showToast(`Conectando con ${provider}...`, 'info');
-        }
-
-        function showToast(msg, type = 'info') {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            const toastIcon = document.getElementById('toastIcon');
-
-            toastMessage.innerText = msg;
-
-            if (type === 'success') {
-                toastIcon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
-            } else if (type === 'error') {
-                toastIcon.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-rose-400"></i>';
-            } else {
-                toastIcon.innerHTML = '<i class="fa-solid fa-circle-info text-indigo-400"></i>';
-            }
-
-            toast.classList.add('show');
-
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3500);
-        }
-
-        function toggleQuickDemoModal() {
-            const modal = document.getElementById('demoModal');
-            if (modal.classList.contains('hidden')) {
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    modal.classList.remove('opacity-0');
-                    modal.querySelector('div').classList.remove('scale-95');
-                }, 10);
-            } else {
-                modal.classList.add('opacity-0');
-                modal.querySelector('div').classList.add('scale-95');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                }, 300);
-            }
-        }
-
-        function simulatePortalRedirect(target) {
-            toggleQuickDemoModal();
-            if (target === 'user') {
-                showToast("Simulando redirección al Portal del Usuario...", "info");
-            } else {
-                showToast("Simulando redirección al Dashboard de Administración...", "info");
-            }
-        }
-    </script>
 </body>
 </html>

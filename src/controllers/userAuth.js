@@ -1,7 +1,7 @@
 //LOGIN
 import express from "express"
 import { Router } from "express"
-import { User } from "../data/database"
+import { User } from "../data/database.js"
 
 //CREATE ACCOUNT
 
@@ -31,7 +31,7 @@ export const registerUser = async (req, res) => {
 
 //LOG IN
 export const loginUser = async (req, res) => {
-    const {email, password} = req.body
+    const {email, password} = req.body                
     if (!email || !password) {
         return res.status(400).json({
             message: "Missing fields"

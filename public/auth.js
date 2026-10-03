@@ -1,7 +1,7 @@
 //Protect the Web
 
 function Protect() {
-    const auth = localStorage.getItem("auth")
+    const auth = localStorage.getItem("token")
 
     if(!auth) {
         alert("You have to be registered")
@@ -10,10 +10,14 @@ function Protect() {
 }
 
 function logOut() {
-    localStorage.removeItem("auth")
+    localStorage.removeItem("token")
     localStorage.removeItem("user")
     alert("Login out")
     window.location.href = "../public/main.html"
 }
 
 //Protect()
+
+
+//API CONSUME
+

@@ -1,5 +1,5 @@
 //Configurations database
-import { crearTabla } from '../data/database';
+import { crearTabla } from '../data/database.js';
 require('dotenv').config();
 
 export const pool = mysql.createPool({
