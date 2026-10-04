@@ -6,6 +6,7 @@ import { User } from "../data/database.js";
 export const RegisterAdmin = async (req, res) => {
     try {
         const {name, email, phone, password} =  req.body
+        
         if (!name || !email || !phone || !password) {
             return res.status(400).json({
                 message: "Missing fields"

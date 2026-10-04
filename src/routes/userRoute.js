@@ -7,4 +7,4 @@ import { registerUser, loginUser } from "../controllers/userAuth.js";
 router.post("/register", registerUser)
 
 //Login route
-router.post("/login", loginUser)
+router.get("/login", loginUser)
