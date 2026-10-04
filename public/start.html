@@ -305,6 +305,8 @@
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
 
+                    <div id="message"></div>
+
                     <div class="relative my-6 text-center">
                         <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
                         <span class="relative px-3 bg-slate-100/80 text-[11px] font-semibold text-slate-400 uppercase rounded-full">o ingresa con</span>
@@ -381,13 +383,8 @@
                         </div>
 
                         <!-- Strength Meter Bar -->
-                        <div class="mt-2 grid grid-cols-4 gap-1.5">
-                            <div id="str1" class="strength-bar"></div>
-                            <div id="str2" class="strength-bar"></div>
-                            <div id="str3" class="strength-bar"></div>
-                            <div id="str4" class="strength-bar"></div>
-                        </div>
-                        <p id="strengthText" class="text-[10px] font-semibold text-slate-400 mt-1 text-right">Escribe una contraseña</p>
+                        
+                        <p id="strengthText" class="text-[10px] font-semibold text-slate-400 mt-1 text-right"></p>
                     </div>
 
                     <!-- Terms and Conditions Checkbox -->
@@ -416,32 +413,9 @@
     <footer class="relative z-10 text-center py-4 text-xs text-white/80 font-medium">
         <p>© CoworkPRO Platform. Todos los derechos reservados.</p>
     </footer>
-
-    <div id="demoModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 transform scale-95 transition-transform duration-300">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-extrabold text-slate-800 flex items-center gap-2">
-                    <i class="fa-solid fa-route text-indigo-600"></i> Simular Navegación
-                </h3>
-                <button onclick="toggleQuickDemoModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <p class="text-xs text-slate-500 mb-5">
-                Una vez conectado con tu Backend, las peticiones HTTP redirigirán automáticamente según la respuesta del servidor.
-            </p>
-            
-
-    <div id="toast" class="toast fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 max-w-sm border border-slate-700">
-        <div id="toastIcon" class="text-indigo-400 text-lg">
-            <i class="fa-solid fa-circle-info"></i>
-        </div>
-        <div class="flex-1">
-            <p id="toastMessage" class="text-xs font-semibold">Notificación de prueba</p>
-        </div>
-    </div>
-
+           
 <script src="script.js"></script>
+<script src="apiConsume.js"></script>
 
 </body>
 </html>

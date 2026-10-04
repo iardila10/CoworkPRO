@@ -97,6 +97,7 @@
 
             showToast(`¡${actionText}! Has ingresado como ${roleName}.`, 'success')
 
+            
             // Here you can integrate with your Backend endpoint via fetch/Axios
             /*
             fetch(`/api/auth/${formType}`, {
@@ -106,6 +107,107 @@
             })
             */
         }
+
+        // public/auth.js
+
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('loginForm');
+    const errorMessage = document.getElementById('error-message');
+
+    // Verificar si el usuario ya está autenticado al cargar la página
+    verificarSesionActiva();
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Limpiar mensajes de error previos
+            if (errorMessage) errorMessage.textContent = '';
+
+            // Capturar los datos del formulario basados en tus inputs del HTML
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                mostrarError('Por favor, completa todos los campos.');
+                return;
+            }
+
+            try {
+                // Consumo de la API de autenticación en el Backend
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    // Si el servidor responde con un error (401, 400, etc.), lanzamos la excepción
+                    throw new Error(data.error || 'Error al iniciar sesión. Inténtalo de nuevo.');
+                }
+
+                // Guardar la sesión de forma segura en el navegador
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('rol', data.rol);
+                localStorage.setItem('nombre', data.nombre);
+
+                // Redirección dinámica basada en el Rol devuelto por la Base de Datos
+                redirigirSegunRol(data.rol);
+
+            } catch (error) {
+                console.error('Error de Autenticación:', error);
+                mostrarError(error.message);
+            }
+        });
+    }
+});
+
+/**
+ * Función encargada de enviar al usuario a su panel correspondiente
+ * @param {string} rol - El rol del usuario ('ADMIN' o 'USER')
+ */
+function redirigirSegunRol(rol) {
+    if (rol === 'ADMIN') {
+        window.location.href = '/dashboard.html'; // O la ruta de tu portal administrador
+    } else if (rol === 'USER') {
+        window.location.href = '/main.html'; // Portal estándar de usuario/coworker
+    } else {
+        window.location.href = '/start.html'; // Caída por defecto si no hay rol claro
+    }
+}
+
+/**
+ * Comprueba si hay un token válido guardado para evitar que un usuario logueado vuelva a ver el login
+ */
+function verificarSesionActiva() {
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Si ya existe una sesión en este navegador, redirigimos automáticamente al panel correspondiente
+    if (token && rol) {
+        redirigirSegunRol(rol);
+    }
+}
+
+/**
+ * Muestra el error en la interfaz de usuario de forma elegante
+ * @param {string} mensaje 
+ */
+function mostrarError(mensaje) {
+    const errorMessage = document.getElementById('error-message');
+    if (errorMessage) {
+        errorMessage.textContent = mensaje;
+        // Opcional: Si implementas las clases de animación que tenías en tu CSS, puedes dispararlas aquí
+        errorMessage.classList.add('animate-bounce'); 
+    } else {
+        alert(mensaje); // Caída de emergencia si el nodo DOM no se encuentra
+    }
+}
+
 
         function socialLogin(provider) {
             showToast(`Conectando con ${provider}...`, 'info');
