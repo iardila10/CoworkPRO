@@ -9,8 +9,7 @@ const password = document.getElementById('regPassword').value;
 const company = document.getElementById("regCompany").value;
 const phone = document.getElementById("regPhone").value;
 
-//DATOS DEL USUARIO REGISTRADO
-
+//REGISTERED USER DATA
 const RegisteredDataUser = {
     name: name,
     email: email,
@@ -19,7 +18,14 @@ const RegisteredDataUser = {
     password: password
 }
 
-//CONSUMO DE API PARA REGISTRARSE como usuario
+//LOGGED USER DATA
+
+const LoggedDataUser = {
+    email: email,
+    password: password
+}
+
+//API CONSUMPTION TO REGISTER as a user
 registerForm.addEventListener("submit", async (event) => {
 
     try {
@@ -34,8 +40,7 @@ registerForm.addEventListener("submit", async (event) => {
         const res = req.json()
 
         if (req.ok && RegisteredDataUser.success) {
-            document.getElementById("message").textContent = "User registered, redirecting to the menu"
-            window.location.href = '..public/main.html'; 
+            document.getElementById("message").textContent = "User registered, redirecting to the login"
         }
         else {
             document.getElementById('menssage').textContent = data.message || 'Bad request';
@@ -52,5 +57,29 @@ registerForm.addEventListener("submit", async (event) => {
 
 
 
+//API CONSUMPTION TO LOG IN
 
-//CONSUMO DE API PARA INICIAR SESION
+loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault()
+
+    try {
+        const req = await fetch("http://localhost:8000/login", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(LoggedDataUser)
+        })
+
+        if (req.ok && LoggedDataUser.success) {
+            document.getElementById("message").textContent = "User registered, redirecting to the menu"
+            window.location.href = "../public/main.html"
+        }
+    }
+
+    catch (error) {
+        document.getElementById('mensaje').textContent = 'Error with the server';
+    }
+
+
+})
