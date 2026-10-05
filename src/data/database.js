@@ -14,7 +14,7 @@ export const crearTabla = async () => {
       email VARCHAR(100) NOT NULL UNIQUE,
       password VARCHAR(255) NOT NULL,
       role ENUM('user', 'admin') DEFAULT 'user',
-      activo BOOLEAN DEFAULT TRUE,
+      active BOOLEAN DEFAULT TRUE,
       creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `;
@@ -29,9 +29,9 @@ export const User = {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const [result] = await pool.execute(
-      `INSERT INTO users (name, user, email, password, role) 
+      `INSERT INTO users (name, email, password, role) 
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [nombre, usuario, email, hashedPassword, documento || null, grado || null, rol || 'estudiante']
+      [name, email, hashedPassword, role || 'client']
     );
 
     return result.insertId;

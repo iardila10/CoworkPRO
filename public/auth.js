@@ -13,11 +13,9 @@ function logOut() {
     localStorage.removeItem("token")
     localStorage.removeItem("user")
     alert("Login out")
-    window.location.href = "../public/main.html"
+    window.location.href = "../public/start.html"
 }
 
-//Protect()
+Protect()
 
-
-//API CONSUME
 

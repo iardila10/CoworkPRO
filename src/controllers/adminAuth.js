@@ -40,12 +40,12 @@ export const loginAdmin = async (req, res) => {
     const searchAdmin = await User.SearchforEmailandUser(email, password)
 
     if (!searchAdmin) {
-      return res.status(401).json({ mensaje: 'Credenciales incorrectas' });
+      return res.status(401).json({ message: 'Incorrect credentialss' });
     }
 
-    const goodPassword = await User.compararPassword(password, user.password);
+    const goodPassword = await User.comparePassword(password, Userser.password);
     if (!goodPassword) {
-      return res.status(401).json({ mensaje: 'Credenciales incorrectas' });
+      return res.status(401).json({ message: 'Incorrect credentials' });
     }
 
 }

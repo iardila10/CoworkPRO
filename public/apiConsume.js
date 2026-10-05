@@ -41,6 +41,7 @@ registerForm.addEventListener("submit", async (event) => {
 
         if (req.ok && RegisteredDataUser.success) {
             document.getElementById("message").textContent = "User registered, redirecting to the login"
+            window.location.href = "../public/start.html"
         }
         else {
             document.getElementById('menssage').textContent = data.message || 'Bad request';
@@ -78,8 +79,20 @@ loginForm.addEventListener("submit", async (event) => {
     }
 
     catch (error) {
-        document.getElementById('mensaje').textContent = 'Error with the server';
+        document.getElementById('message').textContent = 'Error with the server';
     }
 
 
 })
+loginForm()
+
+function redirigirSegunRol(rol) {
+    if (rol === 'ADMIN') {
+        window.location.href = '..public/dashboard.html'; // O la ruta de tu portal administrador
+    } else if (rol === 'USER') {
+        window.location.href = '..public/main.html'; // Portal estándar de usuario/coworker
+    } else {
+        window.location.href = '..public/start.html'; // Caída por defecto si no hay rol claro
+    }
+}
+

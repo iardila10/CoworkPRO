@@ -50,7 +50,7 @@ export const loginUser = async (req, res) => {
         const searchUser = await User.SearchforEmailandUser(email, password)
 
         if (!searchUser) {
-      return res.status(401).json({ mensaje: 'Credenciales incorrectas' });
+      return res.status(401).json({ message: 'Incorrect credentials' });
     }
 
         const goodPassword = await User.comparePassword(password, User.password);

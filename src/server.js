@@ -1,10 +1,10 @@
 // 1. Configuración de variables de entorno (Siempre en la primera línea)
 import "dotenv/config"; 
-
 import express from "express";
 import cors from "cors";
 import { User } from "./data/database.js";
 import { loginUser, registerUser } from "./controllers/userAuth.js";
+import { RegisterAdmin, loginAdmin } from "./controllers/adminAuth.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -18,8 +18,11 @@ app.use(express.static("public")); // Sirve archivos estáticos
 // 3. Rutas del Servidor (Cambiadas a .post para mayor seguridad)
 app.post("/register", registerUser); 
 app.post("/login", loginUser);
+app.post("/register", RegisterAdmin);
+app.post("/login", loginAdmin);
 
-// Ruta de prueba para verificar que el servidor responda
+
+
 app.get('/', (req, res) => {
   res.json({ message: 'API de autenticación funcionando 🚀' });
 });
