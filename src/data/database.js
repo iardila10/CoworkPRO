@@ -1,5 +1,7 @@
-import { pool } from '../config/db';
+import 'dotenv/config';
+import { pool } from '../config/db.js';
 import bcrypt from 'bcryptjs';
+import mysql from "mysql2/promise"
 
 // Crear la tabla automáticamente si no existe
 export const crearTabla = async () => {

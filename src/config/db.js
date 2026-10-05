@@ -1,6 +1,8 @@
 //Configurations database
 import { crearTabla } from '../data/database.js';
-require('dotenv').config();
+import bcrypt from "bcryptjs"
+import mysql from 'mysql2/promise';
+
 
 export const pool = mysql.createPool({
   host: process.env.DB_HOST,

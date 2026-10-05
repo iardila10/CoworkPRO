@@ -33,8 +33,9 @@ registerForm.addEventListener("submit", async (event) => {
 
         const res = req.json()
 
-        if (req.ok) {
-            document.getElementById("message").textContent = "User registered"
+        if (req.ok && RegisteredDataUser.success) {
+            document.getElementById("message").textContent = "User registered, redirecting to the menu"
+            window.location.href = '..public/main.html'; 
         }
         else {
             document.getElementById('menssage').textContent = data.message || 'Bad request';

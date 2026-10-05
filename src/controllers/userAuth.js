@@ -13,7 +13,8 @@ export const registerUser = async (req, res) => {
 
             return res.status(200).json({
                 success: true,
-                message: "Succed"
+                message: "Succed",
+                user: { id: User.id, email: User.email }
             })
         }
 
